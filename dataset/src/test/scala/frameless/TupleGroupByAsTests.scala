@@ -7,7 +7,7 @@ case class Source2(name: String, o: Option[Long], ll2: Boolean)
 
 case class Target(l: Long, i: Int, ll1: Long, ll2: Long)
 
-class AsGroupByAsTests extends TypedDatasetSuite {
+class TupleGroupByAsTests extends TypedDatasetSuite {
 
   val genSource = for {
     gl <- Arbitrary.arbShort.arbitrary
@@ -38,8 +38,8 @@ class AsGroupByAsTests extends TypedDatasetSuite {
       (targets('l) / 900L).cast[Long] * 900L,
       targets('i)
     ).agg(
-      frameless.functions.aggregate.sum(targets.colMany('ll1)),
-      frameless.functions.aggregate.sum(targets.colMany('ll2))
+      frameless.functions.aggregate.sum(targets('ll1)),
+      frameless.functions.aggregate.sum(targets('ll2))
     ).as[Target]
 
     val result = grouped.collect.run
